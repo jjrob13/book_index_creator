@@ -3,6 +3,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from collections import Counter, defaultdict
 import re
 import numpy as np
+from nltk.stem import WordNetLemmatizer
 
 @click.command()
 @click.option('--page_offset', default=1,
@@ -47,6 +48,7 @@ def make_index(input_file, output_file, page_offset, tokenizer, ngram_range,
 	page_to_text = {}
 	phrase_to_page = defaultdict(set)
 	command_template = 'pdftotext -f %d -l %d %s -'
+	lemmatize = WordNetLemmatizer().lemmatize
 
 	for page_no in range(page_offset, end_page + 1):
 		command = command_template % (page_no, page_no, input_file)
@@ -55,6 +57,7 @@ def make_index(input_file, output_file, page_offset, tokenizer, ngram_range,
 
 		index_page_no = page_no - page_offset + 1
 		for phrase in get_phrases(page_text):
+			phrase = ' '.join(map(lemmatize, phrase.split()))
 			phrase_to_page[phrase].add(index_page_no)
 
 	phrase_to_pf = {}
