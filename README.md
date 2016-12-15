@@ -1,3 +1,4 @@
+```
 Usage: make_index.py [OPTIONS]
 
 Options:
@@ -20,3 +21,4 @@ Options:
   --min_pf INTEGER        min page frequency for phrases.
   --min_word_len INTEGER
   --help                  Show this message and exit.
+```
